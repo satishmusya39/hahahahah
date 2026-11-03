@@ -1,6 +1,7 @@
 /* ═══ Portfolio Interactions & Mechanics ═════════════════════════
    - Scroll Spy & Sliding Active Indicator
    - Responsive Mobile Navigation Drawer Handler
+   - Clean URL Handler (Removes UTM parameters & #hashes)
    - Formspree AJAX Submission Handler
    - Auto Scroll-to-Top Handler on Refresh
    ═══════════════════════════════════════════════════════════════ */
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* ── 4. Mobile Navigation Toggle ──────────────────────────── */
+    /* ── 4. Mobile Navigation Toggle & Smooth Click Handling ─── */
     function closeMenu() {
         if (!header) return;
         header.classList.remove("menu-open");
@@ -119,7 +120,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    navLinks.forEach((link) => link.addEventListener("click", closeMenu));
+    navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevents appending #section to the URL
+            const targetId = link.getAttribute("href");
+            const targetSection = document.querySelector(targetId);
+
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: "smooth" });
+            }
+
+            closeMenu();
+        });
+    });
+
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeMenu();
     });
@@ -178,7 +192,7 @@ if (contactForm) {
     });
 }
 
-/* ─── ALWAYS START AT HOME ON REFRESH ──────────────────────────── */
+/* ─── ALWAYS START AT HOME & CLEAN URL PARAMS ON LOAD ──────────── */
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
@@ -189,7 +203,9 @@ window.addEventListener('beforeunload', () => {
 
 window.addEventListener('load', () => {
     window.scrollTo(0, 0);
-    if (window.location.hash) {
-        history.replaceState(null, null, ' ');
+
+    // Strips away UTM parameters (like ?utm_source=ig...) and #hashes
+    if (window.location.search || window.location.hash) {
+        history.replaceState(null, null, window.location.pathname);
     }
 });
