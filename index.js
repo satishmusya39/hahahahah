@@ -229,3 +229,64 @@ window.addEventListener('load', () => {
         history.replaceState(null, null, window.location.pathname);
     }
 });
+/* ── 2. Scroll Spy Logic & Smart Navbar ───────────────────── */
+let currentId = null;
+let lastScrollY = window.scrollY; // Track previous scroll position
+
+function setActive(id) {
+    if (id === currentId) return;
+    currentId = id;
+
+    let activeLink = null;
+    navLinks.forEach((link) => {
+        const isActive = link.getAttribute("href") === `#${id}`;
+        link.classList.toggle("active", isActive);
+        if (isActive) {
+            link.setAttribute("aria-current", "true");
+            activeLink = link;
+        } else {
+            link.removeAttribute("aria-current");
+        }
+    });
+
+    moveIndicator(activeLink);
+}
+
+function updateOnScroll() {
+    const scrollY = window.scrollY;
+
+    // --- Smart Navbar Logic ---
+    if (header) {
+        if (scrollY <= 0) {
+            // Always show at the very top
+            header.classList.remove('nav-hidden');
+        } else if (scrollY > lastScrollY && scrollY > 70) {
+            // Scrolling down (and past the header height)
+            header.classList.add('nav-hidden');
+            closeMenu(); // Auto-close mobile menu if open
+        } else {
+            // Scrolling up
+            header.classList.remove('nav-hidden');
+        }
+        lastScrollY = scrollY;
+    }
+    // --------------------------
+
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const triggerLine = header ? header.offsetHeight + window.innerHeight * 0.3 : 200;
+    let activeId = sections[0]?.id;
+
+    sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= triggerLine) {
+            activeId = section.id;
+        }
+    });
+
+    if (maxScroll > 0 && scrollY >= maxScroll - 5) {
+        activeId = sections[sections.length - 1].id;
+    }
+
+    if (activeId) {
+        setActive(activeId);
+    }
+}
