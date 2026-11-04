@@ -27,10 +27,11 @@
 }
 
 /* Prevent horizontal page scrolling on all mobile browsers */
-html, body {
+html,
+body {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
     scroll-behavior: smooth;
 }
 
@@ -160,6 +161,8 @@ h4 {
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     width: 100%;
+    /* Add transition for the slide up/down effect */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav {
@@ -219,8 +222,8 @@ h4 {
     border-radius: 4px;
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
-                width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+        width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .nav-indicator.is-ready {
@@ -267,9 +270,17 @@ h4 {
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
 }
 
 .hero-title {
@@ -413,19 +424,22 @@ h4 {
     justify-content: space-between;
     align-items: center;
     font-size: 0.88rem;
-    gap: 0.5rem; /* Added gap to prevent elements from crashing */
+    gap: 0.5rem;
+    /* Added gap to prevent elements from crashing */
 }
 
 .info-label {
     color: var(--muted);
     font-weight: 500;
-    flex-shrink: 0; /* Prevents the label from squishing */
+    flex-shrink: 0;
+    /* Prevents the label from squishing */
 }
 
 .info-value {
     font-weight: 600;
     text-align: right;
-    word-break: break-word; /* Allows long values like emails to wrap instead of overflowing */
+    word-break: break-word;
+    /* Allows long values like emails to wrap instead of overflowing */
     overflow-wrap: anywhere;
 }
 
@@ -495,8 +509,15 @@ h4 {
 }
 
 @keyframes nodePulse {
-    0% { transform: scale(0.8); opacity: 0.8; }
-    100% { transform: scale(1.6); opacity: 0; }
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
 }
 
 .edu-card-inner {
@@ -739,8 +760,13 @@ h4 {
     font-weight: 600;
 }
 
-.blog-badge { color: var(--accent); }
-.blog-date { color: var(--muted); }
+.blog-badge {
+    color: var(--accent);
+}
+
+.blog-date {
+    color: var(--muted);
+}
 
 .blog-title {
     font-size: 1.1rem;
@@ -821,14 +847,20 @@ h4 {
     flex-shrink: 0;
 }
 
-.contact-icon-insta { color: #e1306c; }
-.contact-icon-fb { color: #1877f2; }
+.contact-icon-insta {
+    color: #e1306c;
+}
+
+.contact-icon-fb {
+    color: #1877f2;
+}
 
 .contact-details {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
-    min-width: 0; /* Ensures the flex container allows shrinking for word wrapping */
+    min-width: 0;
+    /* Ensures the flex container allows shrinking for word wrapping */
 }
 
 .contact-label {
@@ -843,8 +875,9 @@ h4 {
     font-size: 0.92rem;
     font-weight: 700;
     color: var(--text);
-    word-break: break-word; /* Allows long URLs or emails to wrap */
-    overflow-wrap: anywhere; 
+    word-break: break-word;
+    /* Allows long URLs or emails to wrap */
+    overflow-wrap: anywhere;
 }
 
 .contact-status-card {
@@ -1007,6 +1040,10 @@ h4 {
         transition: all 0.3s ease;
     }
 
+    .header.nav-hidden {
+        transform: translateY(-100%);
+    }
+
     .header.menu-open .nav-toggle span:nth-child(1) {
         transform: translateY(8.5px) rotate(45deg);
     }
@@ -1097,7 +1134,8 @@ h4 {
     .about-grid,
     .contact-grid {
         grid-template-columns: 1fr;
-        width: 100%; /* Ensures layout boundaries */
+        width: 100%;
+        /* Ensures layout boundaries */
     }
 
     /* Force the Quick Facts Card to 100% width and center it */
@@ -1110,7 +1148,7 @@ h4 {
     .contact-info-cards {
         height: auto;
     }
-    
+
     .contact-card {
         padding: 1rem;
         width: 100%;
@@ -1118,7 +1156,8 @@ h4 {
     }
 
     .contact-value {
-        font-size: 0.85rem; /* Scales text down slightly on mobile */
+        font-size: 0.85rem;
+        /* Scales text down slightly on mobile */
     }
 
     .contact-form {
